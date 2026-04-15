@@ -5,9 +5,9 @@ import Home from './pages/Home'
 import { Toaster } from "react-hot-toast";
 import HealthPicks from './pages/HealthPicks';
 
-import Slider from './components/Slider.JSX';   // 👈 keep filename consistent
+import Slider from './components/Slider.jsx';
 import Footer from './components/Footer';
-import { useAppContext } from './context/AppContext';
+import { useAppContext } from './context/AppContext.jsx';
 import Login from './components/Login';
 import AllProducts from './pages/AllProducts';
 import ProductCategory from './pages/ProductCategory';
@@ -62,7 +62,7 @@ const App = () => {
 
       {/* Footer only for non-seller paths */}
       {!isSellerPath && <Footer />}
-      
+
       {/* Cart Widget */}
       {!isSellerPath && <CartWidget />}
     </div>

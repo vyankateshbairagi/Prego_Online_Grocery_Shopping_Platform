@@ -18,8 +18,12 @@ const port = process.env.PORT || 4000;
 await connectDB()
 await connectCloudinary()
 
-// Allow multiple origins
-const allowedOrigins = ['http://localhost:5173', '']
+// Allow local development and the deployed frontend origin.
+const allowedOrigins = [
+    'http://localhost:5173',
+    process.env.CLIENT_URL,
+    process.env.FRONTEND_URL,
+].filter(Boolean)
 
 app.post('/stripe', express.raw({type: 'application/json'}), stripeWebhooks)
 
