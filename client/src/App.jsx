@@ -7,7 +7,7 @@ import HealthPicks from './pages/HealthPicks';
 
 import Slider from './components/Slider.jsx';
 import Footer from './components/Footer';
-import { useAppContext } from './context/AppContext.jsx';
+import { useAppContext } from './context/Appcontext.jsx';
 import Login from './components/Login';
 import AllProducts from './pages/AllProducts';
 import ProductCategory from './pages/ProductCategory';
