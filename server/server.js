@@ -18,19 +18,47 @@ const port = process.env.PORT || 4000;
 await connectDB()
 await connectCloudinary()
 
-// Allow local development and the deployed frontend origin.
-const allowedOrigins = [
+const configuredOrigins = [
     'http://localhost:5173',
     process.env.CLIENT_URL,
     process.env.FRONTEND_URL,
+    ...(process.env.CORS_ORIGINS || '').split(',').map((origin) => origin.trim()),
 ].filter(Boolean)
+
+const normalizeOrigin = (origin) => {
+    try {
+        return new URL(origin).origin
+    } catch {
+        return null
+    }
+}
+
+const allowedOrigins = new Set(configuredOrigins.map(normalizeOrigin).filter(Boolean))
+
+const isAllowedOrigin = (origin) => {
+    const normalized = normalizeOrigin(origin)
+    if (!normalized) return false
+    if (allowedOrigins.has(normalized)) return true
+
+    // Allow Vercel preview deployments for this frontend.
+    return /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(normalized)
+}
 
 app.post('/stripe', express.raw({type: 'application/json'}), stripeWebhooks)
 
 // Middleware configuration
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({origin: allowedOrigins, credentials: true}));
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || isAllowedOrigin(origin)) {
+            return callback(null, true)
+        }
+
+        return callback(new Error(`Not allowed by CORS: ${origin}`))
+    },
+    credentials: true,
+}));
 
 
 app.get('/', (req, res) => res.send("API is Working"));
