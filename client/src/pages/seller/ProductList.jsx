@@ -1,9 +1,11 @@
 import React from 'react'
 import { useAppContext } from '../../context/AppContext'
+import { assets } from '../../assets/assets'
 import toast from 'react-hot-toast'
 
 const ProductList = () => {
     const {products, currency, axios, fetchProducts} = useAppContext()
+    const safeProducts = products || []
 
     const toggleStock = async (id, inStock)=>{
         try {
@@ -18,37 +20,103 @@ const ProductList = () => {
             toast.error(error.message)
         } 
     }
+
+    const deleteProductHandler = async (id, productName)=>{
+        if(!globalThis.confirm(`Are you sure you want to delete "${productName}"? This action cannot be undone.`)){
+            return;
+        }
+        
+        try {
+            const { data } = await axios.post('/api/product/delete', {id});
+            if (data.success){
+                fetchProducts();
+                toast.success(data.message)
+            }else{
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        } 
+    }
   return (
     <div className="no-scrollbar flex-1 h-[95vh] overflow-y-scroll flex flex-col justify-between">
             <div className="w-full md:p-10 p-4">
                 <h2 className="pb-4 text-lg font-medium">All Products</h2>
-                <div className="flex flex-col items-center max-w-4xl w-full overflow-hidden rounded-md bg-white border border-gray-500/20">
-                    <table className="md:table-auto table-fixed w-full overflow-hidden">
+                <div className="md:hidden space-y-3">
+                    {safeProducts.map((product) => (
+                        <div key={product._id} className="rounded-md border border-gray-500/20 bg-white p-3">
+                            <div className="flex gap-3">
+                                <div className="border border-gray-300 rounded p-2 shrink-0">
+                                    <img src={product?.image?.[0]} alt="Product" className="w-16 h-16 object-cover" />
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                    <p className="font-medium text-sm truncate">{product?.name || "Unnamed Product"}</p>
+                                    <p className="text-xs text-gray-500 mt-1">{product?.category || "-"}</p>
+                                    <p className="text-sm font-medium mt-2">{currency}{product?.offerPrice ?? 0}</p>
+                                </div>
+                            </div>
+                            <div className="mt-3 flex items-center justify-between gap-2">
+                                <div className="flex items-center gap-2">
+                                    <span className="text-sm text-gray-700">In Stock</span>
+                                    <label className="relative inline-flex items-center cursor-pointer text-gray-900 gap-3">
+                                        <span className="sr-only">Toggle stock status</span>
+                                        <input onChange={()=> toggleStock(product._id, !product.inStock)} checked={!!product.inStock} type="checkbox" className="sr-only peer" />
+                                        <div className="w-12 h-7 bg-slate-300 rounded-full peer peer-checked:bg-blue-600 transition-colors duration-200"></div>
+                                        <span className="dot absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-5"></span>
+                                    </label>
+                                </div>
+                                <button 
+                                    onClick={() => deleteProductHandler(product._id, product.name)}
+                                    className="p-2 hover:bg-red-50 rounded transition-colors"
+                                    title="Delete product"
+                                >
+                                    <img src={assets.remove_icon} alt="Delete" className="w-5 h-5" />
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="hidden md:block max-w-5xl w-full overflow-x-auto rounded-md bg-white border border-gray-500/20">
+                    <table className="w-full min-w-[760px] table-auto">
                         <thead className="text-gray-900 text-sm text-left">
                             <tr>
                                 <th className="px-4 py-3 font-semibold truncate">Product</th>
                                 <th className="px-4 py-3 font-semibold truncate">Category</th>
-                                <th className="px-4 py-3 font-semibold truncate hidden md:block">Selling Price</th>
+                                <th className="px-4 py-3 font-semibold truncate">Selling Price</th>
                                 <th className="px-4 py-3 font-semibold truncate">In Stock</th>
+                                <th className="px-4 py-3 font-semibold truncate">Action</th>
                             </tr>
                         </thead>
                         <tbody className="text-sm text-gray-500">
-                            {products.map((product) => (
+                            {safeProducts.map((product) => (
                                 <tr key={product._id} className="border-t border-gray-500/20">
-                                    <td className="md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3 truncate">
+                                    <td className="px-4 py-3">
+                                        <div className="flex items-center gap-3">
                                         <div className="border border-gray-300 rounded p-2">
-                                            <img src={product.image[0]} alt="Product" className="w-16" />
+                                            <img src={product?.image?.[0]} alt="Product" className="w-16 h-16 object-cover" />
                                         </div>
-                                        <span className="truncate max-sm:hidden w-full">{product.name}</span>
+                                        <span className="truncate max-w-[260px]">{product?.name || "Unnamed Product"}</span>
+                                        </div>
                                     </td>
-                                    <td className="px-4 py-3">{product.category}</td>
-                                    <td className="px-4 py-3 max-sm:hidden">{currency}{product.offerPrice}</td>
+                                    <td className="px-4 py-3">{product?.category || "-"}</td>
+                                    <td className="px-4 py-3">{currency}{product?.offerPrice ?? 0}</td>
                                     <td className="px-4 py-3">
                                         <label className="relative inline-flex items-center cursor-pointer text-gray-900 gap-3">
-                                            <input onClick={()=> toggleStock(product._id, !product.inStock)} checked={product.inStock} type="checkbox" className="sr-only peer" />
+                                            <span className="sr-only">Toggle stock status</span>
+                                            <input onChange={()=> toggleStock(product._id, !product.inStock)} checked={!!product.inStock} type="checkbox" className="sr-only peer" />
                                             <div className="w-12 h-7 bg-slate-300 rounded-full peer peer-checked:bg-blue-600 transition-colors duration-200"></div>
                                             <span className="dot absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-5"></span>
                                         </label>
+                                    </td>
+                                    <td className="px-4 py-3">
+                                        <button 
+                                            onClick={() => deleteProductHandler(product._id, product.name)}
+                                            className="p-2 hover:bg-red-50 rounded transition-colors"
+                                            title="Delete product"
+                                        >
+                                            <img src={assets.remove_icon} alt="Delete" className="w-5 h-5" />
+                                        </button>
                                     </td>
                                 </tr>
                             ))}

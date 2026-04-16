@@ -95,7 +95,7 @@ const Cart = () => {
     },[user])
     
     return products.length > 0 && cartItems ? (
-        <div className="flex flex-col md:flex-row mt-16">
+        <div className="flex flex-col lg:flex-row mt-16 gap-8 lg:gap-4">
             <div className='flex-1 max-w-4xl'>
                 <h1 className="text-3xl font-medium mb-6">
                     Shopping Cart <span className="text-sm text-primary">{getCartCount()} Items</span>
@@ -144,7 +144,7 @@ const Cart = () => {
 
             </div>
 
-            <div className="max-w-[360px] w-full bg-gray-100/40 p-5 max-md:mt-16 border border-gray-300/70">
+            <div className="w-full lg:w-[380px] bg-gray-100/40 p-5 lg:p-6 border border-gray-300/70 rounded-lg lg:sticky lg:top-20 lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto">
                 <h2 className="text-xl md:text-xl font-medium">Order Summary</h2>
                 <hr className="border-gray-300 my-5" />
 
@@ -217,14 +217,14 @@ const Cart = () => {
                 {user ? (
                     <button 
                         onClick={placeOrder} 
-                        className="w-full py-3 mt-6 cursor-pointer bg-primary text-white font-medium hover:bg-primary-dull transition"
+                        className="w-full py-3 mt-8 cursor-pointer bg-primary hover:bg-primary-dull text-white font-semibold rounded-lg transition shadow-md hover:shadow-lg text-base md:text-lg"
                     >
                         {paymentOption === "COD" ? "Place Order" : "Proceed to Checkout"}
                     </button>
                 ) : (
                     <button 
                         onClick={() => setShowUserLogin(true)}
-                        className="w-full py-3 mt-6 cursor-pointer bg-primary text-white font-medium hover:bg-primary-dull transition"
+                        className="w-full py-3 mt-8 cursor-pointer bg-primary hover:bg-primary-dull text-white font-semibold rounded-lg transition shadow-md hover:shadow-lg text-base md:text-lg"
                     >
                         Proceed to Login
                     </button>

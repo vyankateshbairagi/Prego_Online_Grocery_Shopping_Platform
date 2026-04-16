@@ -27,46 +27,69 @@ const Orders = () => {
 
 
   return (
-    <div className='no-scrollbar flex-1 h-[95vh] overflow-y-scroll'>
-    <div className="md:p-10 p-4 space-y-4">
-            <h2 className="text-lg font-medium">Orders List</h2>
-            {orders.map((order, index) => (
-                <div key={index} className="flex flex-col md:items-center md:flex-row gap-5 justify-between p-5 max-w-4xl rounded-md border border-gray-300">
+    <div className='no-scrollbar flex-1 overflow-y-scroll'>
+    <div className="w-full md:p-10 p-4 space-y-3 md:space-y-4">
+            <h2 className="text-lg md:text-2xl font-semibold text-gray-900">Orders List</h2>
+            {orders.length === 0 ? (
+                <div className="flex items-center justify-center py-12">
+                    <p className="text-gray-500 text-center">No orders found</p>
+                </div>
+            ) : (
+                orders.map((order, index) => (
+                    <div key={order?._id || index} className="flex flex-col gap-3 md:gap-4 p-3 md:p-5 rounded-lg border border-gray-200 bg-white hover:shadow-sm transition">
 
-                    <div className="flex gap-5 max-w-80">
-                        <img className="w-12 h-12 object-cover" src={assets.box_icon} alt="boxIcon" />
-                        <div>
-                            {order.items.map((item, index) => (
-                                <div key={index} className="flex flex-col">
-                                    <p className="font-medium">
-                                        {item.product.name}{" "} 
-                                        <span className="text-primary">x {item.quantity}</span>
-                                    </p>
+                        <div className="flex flex-col md:flex-row gap-3 md:gap-4">
+                            <div className="flex gap-3 flex-1 min-w-0">
+                                <img className="w-10 h-10 md:w-12 md:h-12 object-cover flex-shrink-0" src={assets.box_icon} alt="boxIcon" />
+                                <div className="min-w-0 flex-1">
+                                    <p className="text-xs md:text-sm font-medium text-gray-900 mb-1">Items:</p>
+                                    {(order?.items || []).map((item, index) => (
+                                        <div key={index} className="text-xs md:text-sm text-gray-700">
+                                            <p className="truncate">
+                                                {item?.product?.name || "Product unavailable"}{" "}
+                                                <span className="text-primary font-semibold">x{item?.quantity ?? 0}</span>
+                                            </p>
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
+                            </div>
+
+                            <div className="flex-1 min-w-0">
+                                <p className="text-xs md:text-sm font-medium text-gray-900 mb-1">Delivery To:</p>
+                                <p className='text-xs md:text-sm text-black font-semibold'>
+                                    {order?.address?.firstName || ""} {order?.address?.lastName || ""}</p>
+                                <p className="text-xs md:text-sm text-gray-600 truncate">{order?.address?.street || "-"}, {order?.address?.city || "-"}</p>
+                                <p className="text-xs md:text-sm text-gray-600"> {order?.address?.state || "-"}, {order?.address?.zipcode || "-"}</p>
+                                <p className="text-xs md:text-sm text-gray-600">{order?.address?.phone || "-"}</p>
+                            </div>
+                        </div>
+
+                        <div className="border-t border-gray-200 pt-3 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
+                            <div>
+                                <p className="text-xs text-gray-500 mb-1">Amount</p>
+                                <p className="font-bold text-primary text-sm md:text-base">{currency}{order?.amount ?? 0}</p>
+                            </div>
+
+                            <div>
+                                <p className="text-xs text-gray-500 mb-1">Payment</p>
+                                <p className="text-xs md:text-sm font-medium text-gray-900">{order?.paymentType || "-"}</p>
+                            </div>
+
+                            <div>
+                                <p className="text-xs text-gray-500 mb-1">Date</p>
+                                <p className="text-xs md:text-sm font-medium text-gray-900">{order?.createdAt ? new Date(order.createdAt).toLocaleDateString() : "-"}</p>
+                            </div>
+
+                            <div>
+                                <p className="text-xs text-gray-500 mb-1">Status</p>
+                                <p className={`text-xs md:text-sm font-semibold px-2 py-1 rounded w-fit ${order?.isPaid ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>
+                                    {order?.isPaid ? "Paid" : "Pending"}
+                                </p>
+                            </div>
                         </div>
                     </div>
-
-                    <div className="text-sm md:text-base text-black/60">
-                        <p className='text-black/80'>
-                        {order.address.firstName} {order.address.lastName}</p>
-
-                        <p>{order.address.street}, {order.address.city}</p>
-                        <p> {order.address.state}, {order.address.zipcode}, {order.address.country}</p>
-                        <p></p>
-                        <p>{order.address.phone}</p>
-                    </div>
-
-                    <p className="font-medium text-lg my-auto">
-                    {currency}{order.amount}</p>
-
-                    <div className="flex flex-col text-sm md:text-base text-black/60">
-                        <p>Method: {order.paymentType}</p>
-                        <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p>
-                        <p>Payment: {order.isPaid ? "Paid" : "Pending"}</p>
-                    </div>
-                </div>
-            ))}
+                ))
+            )}
         </div>
         </div>
   )

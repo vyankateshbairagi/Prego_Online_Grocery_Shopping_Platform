@@ -17,7 +17,7 @@ const BestSeller = () => {
       {(!bestSellers || bestSellers.length === 0) ? (
         <p className="mt-4 text-gray-500">No best sellers available right now.</p>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-6 lg:grid-cols-5 mt-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-4 mt-8">
           {bestSellers.map((product) => (
             <ProductCard key={product.id || product._id} product={product} />
           ))}

@@ -5,6 +5,7 @@ A full-stack e-commerce application built with React and Node.js, featuring a mo
 ## 🚀 Features
 
 ### Customer Features
+
 - 🛍️ Browse products by categories
 - 🔍 Product search and filtering
 - 🛒 Shopping cart management
@@ -16,6 +17,7 @@ A full-stack e-commerce application built with React and Node.js, featuring a mo
 - 📱 Responsive design for all devices
 
 ### Seller Features
+
 - 👤 Separate seller authentication
 - ➕ Add and manage products
 - 📸 Image upload with Cloudinary
@@ -25,6 +27,7 @@ A full-stack e-commerce application built with React and Node.js, featuring a mo
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **React 19** - Modern UI library
 - **Vite** - Fast build tool and dev server
 - **Tailwind CSS 4** - Utility-first CSS framework
@@ -35,6 +38,7 @@ A full-stack e-commerce application built with React and Node.js, featuring a mo
 - **React Canvas Confetti** - Celebration effects
 
 ### Backend
+
 - **Node.js** - JavaScript runtime
 - **Express** - Web application framework
 - **MongoDB** - NoSQL database
@@ -58,18 +62,21 @@ Before running this project, make sure you have:
 ## 🔧 Installation
 
 ### 1. Clone the repository
+
 ```bash
 git clone <repository-url>
 cd Prego
 ```
 
 ### 2. Install Server Dependencies
+
 ```bash
 cd server
 npm install
 ```
 
 ### 3. Install Client Dependencies
+
 ```bash
 cd ../client
 npm install
@@ -102,28 +109,34 @@ CLIENT_URL=http://localhost:5173
 ### Development Mode
 
 #### Start the Backend Server
+
 ```bash
 cd server
 npm run server
 ```
+
 The server will run on http://localhost:4000
 
 #### Start the Frontend
+
 ```bash
 cd client
 npm run dev
 ```
+
 The client will run on http://localhost:5173
 
 ### Production Build
 
 #### Build the Frontend
+
 ```bash
 cd client
 npm run build
 ```
 
 #### Start the Server
+
 ```bash
 cd server
 npm start
@@ -165,17 +178,20 @@ Prego/
 ## 🔐 API Endpoints
 
 ### User Routes
+
 - `POST /api/user/register` - Register new user
 - `POST /api/user/login` - User login
 - `GET /api/user/profile` - Get user profile
 - `PUT /api/user/profile` - Update user profile
 
 ### Seller Routes
+
 - `POST /api/seller/register` - Register new seller
 - `POST /api/seller/login` - Seller login
 - `GET /api/seller/orders` - Get seller orders
 
 ### Product Routes
+
 - `GET /api/products` - Get all products
 - `GET /api/products/:id` - Get single product
 - `POST /api/products` - Create product (seller only)
@@ -183,17 +199,20 @@ Prego/
 - `DELETE /api/products/:id` - Delete product (seller only)
 
 ### Cart Routes
+
 - `GET /api/cart` - Get user cart
 - `POST /api/cart` - Add to cart
 - `PUT /api/cart` - Update cart item
 - `DELETE /api/cart/:id` - Remove from cart
 
 ### Order Routes
+
 - `POST /api/orders` - Create new order
 - `GET /api/orders` - Get user orders
 - `GET /api/orders/:id` - Get single order
 
 ### Address Routes
+
 - `POST /api/address` - Add new address
 - `GET /api/address` - Get user addresses
 - `PUT /api/address/:id` - Update address
@@ -202,6 +221,7 @@ Prego/
 ## 🧪 Testing
 
 ### Run Linter
+
 ```bash
 cd client
 npm run lint
@@ -224,6 +244,7 @@ vercel
 ```
 
 ### Environment Variables for Production
+
 Make sure to set all environment variables in your hosting platform's dashboard.
 
 ## 🤝 Contributing
@@ -252,6 +273,7 @@ Your Name - Vyankatesh Bairagi
 ## 📧 Contact
 
 For any queries or suggestions, please reach out:
+
 - Email: vyankateshbairagi.dev@gmail.com
 
 ---

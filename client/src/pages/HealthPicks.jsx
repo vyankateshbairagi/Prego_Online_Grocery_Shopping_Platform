@@ -101,7 +101,7 @@ const HealthPicks = () => {
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">
             {healthCategories.find(cat => cat.category === selectedCategory)?.title} Products
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-4">
             {filteredProducts.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
