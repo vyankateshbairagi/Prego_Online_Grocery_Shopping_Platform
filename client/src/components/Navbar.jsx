@@ -219,7 +219,7 @@ const Navbar = () => {
 
       {/* Bottom Navbar (Categories) - Hidden for health-picks */}
       {location.pathname !== '/health-picks' && (
-        <nav className="bg-gray-100 px-6 md:px-20 lg:px-32 xl:px-40 py-3 flex items-center gap-6 text-sm font-medium border-b border-gray-200 overflow-x-auto">
+        <nav className="bg-gray-100 px-6 md:px-20 lg:px-32 xl:px-40 py-3 flex items-center gap-6 text-sm font-medium border-b border-gray-200 overflow-x-auto no-scrollbar">
           {[
             { name: "Organic Veggies", path: "/products/vegetables" },
             { name: "Fresh Fruits", path: "/products/fruits" },
@@ -229,7 +229,6 @@ const Navbar = () => {
             { name: "Bakery & Breads", path: "/products/bakery" },
             { name: "Grains", path: "/products/grains" },
             { name: "Snacks", path: "/products/snacks" },
-            { name: "Tea & Coffee", path: "/products/tea" },
             { name: "Chocolates", path: "/products/chocolates" },
             { name: "Spices", path: "/products/spices" },
             { name: "Biscuits & Cookies", path: "/products/Biscuits" }

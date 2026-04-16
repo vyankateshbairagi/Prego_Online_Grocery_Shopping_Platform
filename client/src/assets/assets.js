@@ -75,7 +75,6 @@ import Slider_image3 from "./Slider3.jpg";
 import Slider_image4 from "./Slider4.jpg";
 import Slider_image5 from "./Slider5.jpg";
 import Chocolate  from "./Chocolate.png";
-import Tea from "./Tea.png";
 import Snacks from "./Snacks.png";
 import Spices from "./Spices.png";
 import Biscuit from "./Biscuit.png";
@@ -94,7 +93,6 @@ export const assets = {
   Favicon1,
   logo,
   Chocolate,
-  Tea,
   Snacks,
   Spices,
   Biscuit,
@@ -179,12 +177,6 @@ export const categories = [
     path: "Snacks",
     image: Snacks,
     bgColor: "#F1E3F9",
-  },
-  {
-    text: "Tea & Coffee",
-    path: "Tea",
-    image: Tea,
-    bgColor: "#FEE6CD",
   },
   {
     text: "Chocolates",
