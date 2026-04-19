@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 
 const Login = () => {
 
-    const {setShowUserLogin, setUser, axios, navigate} = useAppContext()
+    const {setShowUserLogin, setUser, axios, navigate, t} = useAppContext()
 
     const [state, setState] = React.useState("login");
     const [name, setName] = React.useState("");
@@ -40,20 +40,20 @@ const Login = () => {
 
       <form onSubmit={onSubmitHandler} onClick={(e)=>e.stopPropagation()} className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] rounded-lg shadow-xl border border-gray-200 bg-white">
             <p className="text-2xl font-medium m-auto">
-                <span className="text-primary">User</span> {state === "login" ? "Login" : "Sign Up"}
+                <span className="text-primary">{t("login.user")}</span> {state === "login" ? t("login.login") : t("login.signUp")}
             </p>
             {state === "register" && (
                 <>
                     <div className="w-full">
-                        <p>Name</p>
-                        <input onChange={(e) => setName(e.target.value)} value={name} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" type="text" required />
+                        <p>{t("login.name")}</p>
+                        <input onChange={(e) => setName(e.target.value)} value={name} placeholder={t("login.typeHere")} className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" type="text" required />
                     </div>
                     <div className="w-full">
-                        <p>Delivery Address</p>
+                        <p>{t("login.deliveryAddress")}</p>
                         <input 
                             onChange={(e) => setAddress(e.target.value)} 
                             value={address} 
-                            placeholder="Enter your full address" 
+                            placeholder={t("login.enterFullAddress")} 
                             className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" 
                             type="text" 
                             required 
@@ -62,24 +62,24 @@ const Login = () => {
                 </>
             )}
             <div className="w-full ">
-                <p>Email</p>
-                <input onChange={(e) => setEmail(e.target.value)} value={email} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" type="email" required />
+                <p>{t("login.email")}</p>
+                <input onChange={(e) => setEmail(e.target.value)} value={email} placeholder={t("login.typeHere")} className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" type="email" required />
             </div>
             <div className="w-full ">
-                <p>Password</p>
-                <input onChange={(e) => setPassword(e.target.value)} value={password} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" type="password" required />
+                <p>{t("login.password")}</p>
+                <input onChange={(e) => setPassword(e.target.value)} value={password} placeholder={t("login.typeHere")} className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" type="password" required />
             </div>
             {state === "register" ? (
                 <p>
-                    Already have account? <span onClick={() => setState("login")} className="text-primary cursor-pointer">click here</span>
+                    {t("login.alreadyHaveAccount")} <span onClick={() => setState("login")} className="text-primary cursor-pointer">{t("login.clickHere")}</span>
                 </p>
             ) : (
                 <p>
-                    Create an account? <span onClick={() => setState("register")} className="text-primary cursor-pointer">click here</span>
+                    {t("login.createAccountPrompt")} <span onClick={() => setState("register")} className="text-primary cursor-pointer">{t("login.clickHere")}</span>
                 </p>
             )}
             <button className="bg-primary hover:bg-primary-dull transition-all text-white w-full py-2 rounded-md cursor-pointer">
-                {state === "register" ? "Create Account" : "Login"}
+                {state === "register" ? t("login.createAccount") : t("login.login")}
             </button>
         </form>
     </div>

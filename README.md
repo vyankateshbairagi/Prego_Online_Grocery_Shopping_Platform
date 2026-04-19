@@ -9,7 +9,7 @@ A full-stack e-commerce application built with React and Node.js, featuring a mo
 - 🛍️ Browse products by categories
 - 🔍 Product search and filtering
 - 🛒 Shopping cart management
-- 💳 Secure checkout with Stripe
+- 💳 Secure checkout with Razorpay
 - 📦 Order tracking and history
 - 📍 Multiple address management
 - 💊 Health Picks - Specialized health products section
@@ -45,7 +45,7 @@ A full-stack e-commerce application built with React and Node.js, featuring a mo
 - **Mongoose** - MongoDB object modeling
 - **JWT** - Authentication tokens
 - **Bcrypt.js** - Password hashing
-- **Stripe** - Payment processing
+- **Razorpay** - Payment processing
 - **Cloudinary** - Image storage and management
 - **Multer** - File upload handling
 
@@ -57,7 +57,7 @@ Before running this project, make sure you have:
 - npm or yarn
 - MongoDB (local or Atlas account)
 - Cloudinary account
-- Stripe account
+- Razorpay account
 
 ## 🔧 Installation
 
@@ -96,9 +96,9 @@ CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 
-# Stripe Configuration
-STRIPE_SECRET_KEY=your_stripe_secret_key
-STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+# Razorpay Configuration
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
 
 # Client URL (for CORS)
 CLIENT_URL=http://localhost:5173
@@ -267,7 +267,7 @@ Your Name - Vyankatesh Bairagi
 
 - React community for excellent documentation
 - Tailwind CSS for the amazing utility-first framework
-- Stripe for secure payment processing
+- Razorpay for secure payment processing
 - Cloudinary for image management
 
 ## 📧 Contact

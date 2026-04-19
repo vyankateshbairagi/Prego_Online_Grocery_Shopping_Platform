@@ -5,7 +5,7 @@ import { assets } from '../assets/assets';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const CartWidget = () => {
-  const { cartItems, getCartAmount, getCartCount, currency, products, addToCart, removeFromCart, setCartItems, FREE_DELIVERY_THRESHOLD, hasFreeDelivery, user, setShowUserLogin, getSubtotal, getDeliveryFee } = useAppContext();
+  const { cartItems, getCartAmount, getCartCount, currency, products, addToCart, removeFromCart, setCartItems, FREE_DELIVERY_THRESHOLD, hasFreeDelivery, user, setShowUserLogin, getSubtotal, getDeliveryFee, t } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const itemCount = getCartCount();
@@ -34,7 +34,7 @@ const CartWidget = () => {
     <>
       {/* Main Cart Widget */}
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 px-4 w-full max-w-2xl mx-auto">
-        <div 
+        <div
           onClick={() => setIsOpen(true)}
           className="bg-white rounded-full shadow-lg border border-gray-100 px-4 py-3 cursor-pointer"
         >
@@ -42,15 +42,15 @@ const CartWidget = () => {
           <div className="mb-2 px-2">
             {amountForFreeDelivery > 0 ? (
               <div className="text-xs text-gray-600 text-center">
-                Add {currency}{amountForFreeDelivery} more for Free Delivery
+                {t("widget.addMore", { currency, amount: amountForFreeDelivery })}
               </div>
             ) : (
               <div className="text-xs text-primary text-center font-medium">
-                🎉 Yay! You've got Free Delivery
+                {t("widget.freeDeliveryYay")}
               </div>
             )}
             <div className="w-full h-1.5 bg-gray-100 rounded-full mt-1">
-              <div 
+              <div
                 className="h-full bg-primary rounded-full transition-all duration-300"
                 style={{ width: `${Math.min(100, progressPercentage)}%` }}
               />
@@ -68,7 +68,7 @@ const CartWidget = () => {
               </div>
               <div className="flex flex-col">
                 <div className="text-xs text-gray-500">
-                  {currency}{getSubtotal()} + {hasFreeDelivery() ? "Free Delivery" : `${currency}${getDeliveryFee()} delivery`}
+                  {currency}{getSubtotal()} + {hasFreeDelivery() ? t("widget.freeDelivery") : `${currency}${getDeliveryFee()} ${t("widget.delivery")}`}
                 </div>
                 <span className="font-semibold text-gray-800">
                   = {currency}{total}
@@ -78,19 +78,19 @@ const CartWidget = () => {
 
             {/* Action Buttons */}
             <div className="flex gap-2 flex-1 justify-end">
-              <button 
+              <button
                 onClick={(e) => { e.stopPropagation(); setIsOpen(true); }}
                 className="bg-orange-500 text-white px-3 md:px-4 py-2 rounded-full text-sm font-medium hover:bg-orange-600 transition whitespace-nowrap"
               >
-                View Cart
+                {t("widget.viewCart")}
               </button>
               {user ? (
-                <Link 
+                <Link
                   to="/cart"
                   onClick={(e) => e.stopPropagation()}
                   className="bg-primary text-white px-3 md:px-4 py-2 rounded-full text-sm font-medium hover:bg-primary-dark transition whitespace-nowrap"
                 >
-                  Checkout
+                  {t("widget.checkout")}
                 </Link>
               ) : (
                 <button
@@ -102,7 +102,7 @@ const CartWidget = () => {
                   }}
                   className="bg-primary text-white px-3 md:px-4 py-2 rounded-full text-sm font-medium hover:bg-primary-dark transition whitespace-nowrap"
                 >
-                  Login
+                  {t("nav.login")}
                 </button>
               )}
             </div>
@@ -133,7 +133,7 @@ const CartWidget = () => {
             >
               <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-lg font-semibold">Your Cart ({itemCount} items)</h2>
+                  <h2 className="text-lg font-semibold">{t("widget.yourCart", { count: itemCount })}</h2>
                   <button onClick={() => setIsOpen(false)} className="p-2">
                     ✕
                   </button>
@@ -195,7 +195,7 @@ const CartWidget = () => {
                 <div className="mt-6 space-y-4">
                   {amountForFreeDelivery > 0 && (
                     <div className="text-sm text-gray-600 text-center bg-gray-50 p-3 rounded-lg">
-                      Add items worth {currency}{amountForFreeDelivery} more for Free Delivery
+                      {t("widget.addItemsMore", { currency, amount: amountForFreeDelivery })}
                     </div>
                   )}
                   {user ? (
@@ -204,7 +204,7 @@ const CartWidget = () => {
                       onClick={() => setIsOpen(false)}
                       className="block w-full text-center bg-primary text-white py-3 rounded-full font-medium hover:bg-primary-dark transition"
                     >
-                      Proceed to Checkout • {currency}{total}
+                      {t("widget.proceedCheckout", { currency, total })}
                     </Link>
                   ) : (
                     <button
@@ -215,7 +215,7 @@ const CartWidget = () => {
                       }}
                       className="block w-full text-center bg-primary text-white py-3 rounded-full font-medium hover:bg-primary-dark transition"
                     >
-                      Proceed to Login • {currency}{total}
+                      {t("widget.proceedLogin", { currency, total })}
                     </button>
                   )}
                 </div>

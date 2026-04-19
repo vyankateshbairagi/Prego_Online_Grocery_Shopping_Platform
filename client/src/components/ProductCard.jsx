@@ -4,7 +4,7 @@ import { useAppContext } from "../context/AppContext";
 
 
 const ProductCard = ({product}) => {
-    const {currency, addToCart, removeFromCart, cartItems, navigate} = useAppContext();
+    const {currency, addToCart, removeFromCart, cartItems, navigate, t, getCategoryLabel} = useAppContext();
     const [isAnimating, setIsAnimating] = useState(false);
 
     const handleAddToCart = (e, productId) => {
@@ -45,7 +45,7 @@ const ProductCard = ({product}) => {
             });
             
             setTimeout(() => {
-                document.body.removeChild(flyingImage);
+                flyingImage.remove();
                 addToCart(productId);
                 setIsAnimating(false);
             }, 500);
@@ -62,10 +62,10 @@ const ProductCard = ({product}) => {
                 <img className="product-image group-hover:scale-110 transition w-full aspect-square object-cover rounded" src={product.image[0]} alt={product.name} />
             </div>
             <div className="flex-1 flex flex-col text-gray-600 text-xs md:text-sm">
-                <p className="text-gray-500 text-xs">{product.category}</p>
+                <p className="text-gray-500 text-xs">{getCategoryLabel(product.category)}</p>
                 <p className="text-gray-900 font-semibold text-sm md:text-base line-clamp-2 min-h-10">{product.name}</p>
                 <div className="flex items-center gap-1 my-1">
-                    {Array(5).fill('').map((_, i) => (
+                          {new Array(5).fill('').map((_, i) => (
                            <img key={i} className="w-3 md:w-4" src={i < 4 ? assets.star_icon : assets.star_dull_icon} alt=""/>
                     ))}
                     <p className="text-xs text-gray-500">(4)</p>
@@ -78,16 +78,7 @@ const ProductCard = ({product}) => {
                         <p className="text-xs text-gray-400 line-through">{currency}{product.price}</p>
                     </div>
                     <div onClick={(e) => { e.stopPropagation(); }} className="text-primary">
-                        {!cartItems[product._id] ? (
-                            <button 
-                                className="flex items-center justify-center gap-1 bg-primary/10 border border-primary/40 px-2 md:px-3 py-2 rounded hover:bg-primary/20 transition text-xs md:text-sm whitespace-nowrap" 
-                                onClick={(e) => handleAddToCart(e, product._id)}
-                                disabled={isAnimating}
-                            >
-                                <img src={assets.cart_icon} alt="cart_icon" className="w-4 h-4"/>
-                                <span>Add</span>
-                            </button>
-                        ) : (
+                        {cartItems[product._id] ? (
                             <div className="flex items-center justify-center gap-2 bg-primary/10 border border-primary rounded select-none px-2 py-1.5 shadow-sm">
                                 <button onClick={() => {removeFromCart(product._id)}} className="cursor-pointer text-base text-primary px-1.5 h-full hover:bg-primary/20 rounded transition" >
                                     −
@@ -97,6 +88,15 @@ const ProductCard = ({product}) => {
                                     +
                                 </button>
                             </div>
+                        ) : (
+                            <button 
+                                className="flex items-center justify-center gap-1 bg-primary/10 border border-primary/40 px-2 md:px-3 py-2 rounded hover:bg-primary/20 transition text-xs md:text-sm whitespace-nowrap" 
+                                onClick={(e) => handleAddToCart(e, product._id)}
+                                disabled={isAnimating}
+                            >
+                                <img src={assets.cart_icon} alt="cart_icon" className="w-4 h-4"/>
+                                <span>{t("product.add")}</span>
+                            </button>
                         )}
                     </div>
                 </div>

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { dummyProducts } from "../assets/assets";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { translations } from "../i18n/translations";
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
@@ -16,6 +17,7 @@ export const AppContextProvider = ({children})=>{
     const DELIVERY_FEE = 30;
 
     const navigate = useNavigate();
+    const [language, setLanguage] = useState(() => localStorage.getItem("language") || "en");
     const [user, setUser] = useState(null)
     const [isSeller, setIsSeller] = useState(false)
     const [showUserLogin, setShowUserLogin] = useState(false)
@@ -23,6 +25,31 @@ export const AppContextProvider = ({children})=>{
 
     const [cartItems, setCartItems] = useState({})
     const [searchQuery, setSearchQuery] = useState({})
+
+    const t = (key, params = {}) => {
+        const selectedLanguage = translations[language] ? language : "en";
+        const template = translations[selectedLanguage]?.[key] ?? translations.en?.[key] ?? key;
+
+        if (typeof template !== "string") return key;
+
+        return Object.entries(params).reduce((acc, [paramKey, paramValue]) => {
+            return acc.replaceAll(`{{${paramKey}}}`, String(paramValue));
+        }, template);
+    }
+
+    const changeLanguage = (lang) => {
+        if (!translations[lang]) return;
+        setLanguage(lang);
+        localStorage.setItem("language", lang);
+    }
+
+    const getCategoryLabel = (category) => {
+        if (!category) return "";
+        const normalized = String(category).trim().toLowerCase();
+        const key = `category.${normalized}`;
+        const translated = t(key);
+        return translated === key ? category : translated;
+    }
 
   // Fetch Seller Status
   const fetchSeller = async ()=>{
@@ -80,7 +107,7 @@ const addToCart = (itemId)=>{
         cartData[itemId] = 1;
     }
     setCartItems(cartData);
-    toast.success("Added to Cart")
+    toast.success(t("cart.added"))
 }
 
   // Update Cart Item Quantity
@@ -88,7 +115,7 @@ const addToCart = (itemId)=>{
     let cartData = structuredClone(cartItems);
     cartData[itemId] = quantity;
     setCartItems(cartData)
-    toast.success("Cart Updated")
+        toast.success(t("cart.updated"))
   }
 
 // Remove Product from Cart
@@ -100,7 +127,7 @@ const removeFromCart = (itemId)=>{
             delete cartData[itemId];
         }
     }
-    toast.success("Removed from Cart")
+    toast.success(t("cart.removed"))
     setCartItems(cartData)
 }
 
@@ -147,6 +174,10 @@ const getCartAmount = () => {
         fetchProducts()
     },[])
 
+    useEffect(() => {
+        document.documentElement.lang = language;
+    }, [language]);
+
     // Update Database Cart Items
     useEffect(()=>{
         const updateCart = async ()=>{
@@ -172,7 +203,8 @@ const getCartAmount = () => {
         searchQuery, setSearchQuery, getCartAmount, getCartCount,
         axios, fetchProducts, setCartItems,
         FREE_DELIVERY_THRESHOLD, DELIVERY_FEE, hasFreeDelivery,
-        getDeliveryFee, getSubtotal
+        getDeliveryFee, getSubtotal,
+        language, changeLanguage, t, getCategoryLabel
     }
 
     return <AppContext.Provider value={value}>

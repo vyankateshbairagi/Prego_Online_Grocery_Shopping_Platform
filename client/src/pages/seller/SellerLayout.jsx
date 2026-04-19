@@ -5,13 +5,13 @@ import toast from "react-hot-toast";
 
 const SellerLayout = () => {
 
-    const { axios, navigate } = useAppContext();
+    const { axios, navigate, t } = useAppContext();
 
 
     const sidebarLinks = [
-        { name: "Add Product", path: "/seller", icon: assets.add_icon },
-        { name: "Product List", path: "/seller/product-list", icon: assets.product_list_icon },
-        { name: "Orders", path: "/seller/orders", icon: assets.order_icon },
+        { name: t("seller.addProduct"), path: "/seller", icon: assets.add_icon },
+        { name: t("seller.productList"), path: "/seller/product-list", icon: assets.product_list_icon },
+        { name: t("seller.orders"), path: "/seller/orders", icon: assets.order_icon },
     ];
 
     const logout = async ()=>{
@@ -35,8 +35,8 @@ const SellerLayout = () => {
                     <img src={assets.logo} alt="log" className="cursor-pointer h-8 md:h-10" />
                 </Link>
                 <div className="flex items-center gap-2 md:gap-5 text-gray-500 text-xs md:text-base">
-                    <p className="hidden sm:block">Hi! Admin</p>
-                    <button onClick={logout} className='border border-gray-300 hover:border-primary hover:text-primary rounded-full text-xs md:text-sm px-3 md:px-4 py-1.5 transition'>Logout</button>
+                    <p className="hidden sm:block">{t("seller.hiAdmin")}</p>
+                    <button onClick={logout} className='border border-gray-300 hover:border-primary hover:text-primary rounded-full text-xs md:text-sm px-3 md:px-4 py-1.5 transition'>{t("nav.logout")}</button>
                 </div>
             </div>
             <div className="flex h-[calc(100vh-60px)] md:h-[95vh]">

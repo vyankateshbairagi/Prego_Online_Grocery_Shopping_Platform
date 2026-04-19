@@ -52,7 +52,23 @@ export const productById = async (req, res) => {
 export const changeStock = async (req, res) => {
     try {
         const { id, inStock } = req.body
-        await Product.findByIdAndUpdate(id, { inStock })
+
+        if (!id) {
+            return res.json({ success: false, message: "Product ID is required" })
+        }
+
+        const normalizedInStock = inStock === true || inStock === "true"
+
+        const updatedProduct = await Product.findByIdAndUpdate(
+            id,
+            { inStock: normalizedInStock },
+            { new: true, runValidators: true }
+        )
+
+        if (!updatedProduct) {
+            return res.json({ success: false, message: "Product not found" })
+        }
+
         res.json({ success: true, message: "Stock Updated" })
     } catch (error) {
         console.log(error.message);

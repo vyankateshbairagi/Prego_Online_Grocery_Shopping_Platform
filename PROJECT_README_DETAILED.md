@@ -11,7 +11,7 @@ The project demonstrates end-to-end product thinking: UI development, API design
 This project is resume-worthy because it shows practical engineering skills that many companies expect in full-stack roles:
 - Multi-role authentication and authorization (customer and seller paths).
 - Real business workflows (catalog, cart, checkout, order lifecycle, seller inventory).
-- Payment gateway integration (Stripe) with webhook verification.
+- Payment gateway integration (Razorpay) with signature verification.
 - Media upload pipeline (Multer + Cloudinary).
 - Database modeling and relations in MongoDB with Mongoose population.
 - Frontend state management through Context API and async API orchestration.
@@ -24,7 +24,7 @@ Customer-facing features:
 - Product discovery by category.
 - Cart management with quantity updates.
 - Address management for checkout.
-- COD and Stripe checkout options.
+- COD and Razorpay checkout options.
 - Order placement and order history tracking.
 - Responsive shopping interface with modern UX elements.
 
@@ -37,7 +37,7 @@ Seller-facing features:
 Platform features:
 - JWT-based auth session (cookie-based flow).
 - Cloud image storage and retrieval.
-- Stripe webhook-driven payment status updates.
+- Razorpay signature-verified payment status updates.
 - Structured API route separation for users, sellers, products, cart, address, and orders.
 
 ## 4) Technology Stack And Why It Is Used
@@ -57,7 +57,7 @@ Backend:
 - bcryptjs: password hashing for secure credential storage.
 - Multer: multipart file upload handling for product images.
 - Cloudinary: optimized cloud media storage and delivery.
-- Stripe: secure online payments and webhook verification.
+- Razorpay: secure online payments and signature verification.
 - cors + dotenv: environment-safe config and cross-origin control.
 
 Infrastructure/deployment:
@@ -82,7 +82,7 @@ Data Layer (MongoDB):
 
 External Integrations:
 - Cloudinary for media upload in product creation flow.
-- Stripe checkout session for payment and webhook for final order payment reconciliation.
+- Razorpay order creation for payment and signature verification for final payment reconciliation.
 
 ## 6) Folder Walkthrough
 Client side key folders:
@@ -112,10 +112,10 @@ C) Order placement (COD):
 - Frontend sends items + address.
 - Backend calculates total amount and saves order with COD payment type.
 
-D) Order placement (Stripe):
-- Backend creates Stripe checkout session with line items.
-- User pays in Stripe hosted checkout.
-- Webhook validates payment event and marks order paid.
+D) Order placement (Razorpay):
+- Backend creates Razorpay order and returns checkout payload.
+- User pays in Razorpay checkout modal.
+- Signature verification confirms payment and marks order paid.
 
 E) Seller management:
 - Seller accesses protected routes.
@@ -157,7 +157,7 @@ Scaling improvements:
 ## 11) How To Present This Project In Interview (Quick Script)
 Use this short structure:
 - Problem: I wanted to build a realistic e-commerce platform with customer and seller roles.
-- Solution: I designed a MERN-style architecture with Stripe, Cloudinary, and secure auth middleware.
+- Solution: I designed a MERN-style architecture with Razorpay, Cloudinary, and secure auth middleware.
 - My contribution: I implemented the API flows, frontend state logic, payment integration, and responsive pages.
 - Outcome: The app supports full shopping lifecycle and admin operations, and is deployment-ready.
 - Learning: I learned production concerns like CORS, webhook safety, auth boundaries, and schema population.
@@ -186,7 +186,7 @@ Authentication is JWT-based. After login, authenticated requests include session
 
 6. How did you design the order and payment flow?
 Answer:
-Two payment paths are implemented. COD orders are stored directly after amount calculation. Stripe flow creates checkout sessions with line items and redirects the user for payment. A webhook endpoint receives Stripe events and updates order payment status in the database. This pattern is production-aligned because final payment confirmation comes from Stripe server-to-server events.
+Two payment paths are implemented. COD orders are stored directly after amount calculation. Razorpay flow creates a payment order and opens checkout on the client. A server-side signature verification endpoint validates the payment and updates order payment status in the database. This pattern is production-aligned because final payment confirmation is validated with a signed payload.
 
 7. How are images uploaded and stored?
 Answer:
@@ -226,7 +226,7 @@ I would introduce pagination, caching for product catalog, DB indexing, and asyn
 
 16. How do you ensure sensitive information is protected?
 Answer:
-Secrets should only be stored in environment variables and never committed to source control. Tokens and credentials should be rotated regularly, and access should be least-privilege. In production, secret managers and audit controls should be used. Also, webhook signatures must be verified, as done in Stripe flow.
+Secrets should only be stored in environment variables and never committed to source control. Tokens and credentials should be rotated regularly, and access should be least-privilege. In production, secret managers and audit controls should be used. Also, payment signatures must be verified, as done in the Razorpay flow.
 
 17. Why is this project better than a basic CRUD portfolio project?
 Answer:
@@ -234,7 +234,7 @@ It goes beyond CRUD by implementing role-based systems, payment gateway interact
 
 18. If your interviewer asks for your exact contribution, what should you say?
 Answer:
-I implemented and connected frontend pages, shared state management, API integration, backend routes/controllers, schema-driven DB logic, authentication middleware, Stripe payment flow, and Cloudinary image upload flow. I also handled responsive improvements and production-oriented configurations like CORS origin control.
+I implemented and connected frontend pages, shared state management, API integration, backend routes/controllers, schema-driven DB logic, authentication middleware, Razorpay payment flow, and Cloudinary image upload flow. I also handled responsive improvements and production-oriented configurations like CORS origin control.
 
 19. What would be your next milestone if this became a startup product?
 Answer:
@@ -247,7 +247,7 @@ I learned how independent modules collaborate across frontend, backend, database
 ## 13) Suggested Resume Bullet Points (You Can Reuse)
 - Built a full-stack e-commerce platform with customer and seller modules using React, Node.js, Express, and MongoDB.
 - Implemented secure JWT-based auth with role-specific middleware and cookie-enabled API session flow.
-- Integrated Stripe checkout and webhook-based payment confirmation for reliable order reconciliation.
+- Integrated Razorpay checkout and signature-based payment confirmation for reliable order reconciliation.
 - Developed image upload pipeline with Multer and Cloudinary for scalable media handling.
 - Designed modular REST APIs and Mongoose models for products, cart, addresses, and orders.
 - Improved seller dashboard responsiveness and robustness with defensive rendering patterns.

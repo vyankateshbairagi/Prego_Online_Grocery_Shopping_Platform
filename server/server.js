@@ -10,7 +10,6 @@ import productRouter from './routes/productRoute.js';
 import cartRouter from './routes/cartRoute.js';
 import addressRouter from './routes/addressRoute.js';
 import orderRouter from './routes/orderRoute.js';
-import { stripeWebhooks } from './controllers/orderController.js';
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -43,8 +42,6 @@ const isAllowedOrigin = (origin) => {
     // Allow Vercel preview deployments for this frontend.
     return /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(normalized)
 }
-
-app.post('/stripe', express.raw({type: 'application/json'}), stripeWebhooks)
 
 // Middleware configuration
 app.use(express.json());

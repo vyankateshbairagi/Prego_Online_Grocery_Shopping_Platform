@@ -4,7 +4,7 @@ import ProductCard from '../components/ProductCard'
 
 const AllProducts = () => {
 
-    const {products, searchQuery } = useAppContext()
+  const {products, searchQuery, t } = useAppContext()
     const [filteredProducts, setFilteredProducts] = useState([])
 
     useEffect(()=>{
@@ -19,7 +19,7 @@ const AllProducts = () => {
   return (
     <div className='mt-10 flex flex-col'>
       <div className='flex flex-col items-end w-max'>
-        <p className='text-2xl uppercase font-bold text-gray-800 mb-6'>All products</p>
+        <p className='text-2xl uppercase font-bold text-gray-800 mb-6'>{t("allProducts.title")}</p>
         <div className='w-16 h-0.5 bg-primary rounded-full'></div>
       </div>
 
